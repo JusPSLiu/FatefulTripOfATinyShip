@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://4rru50b5wml5"]
+
+[ext_resource type="PackedScene" uid="uid://bxk7qbb2ocmiq" path="res://Art/3DModels/SnowmansLand/coolSnowman.glb" id="1_wdhmp"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="coolSnowman" parent="." instance=ExtResource("1_wdhmp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.740067, 0, 2.95699)
