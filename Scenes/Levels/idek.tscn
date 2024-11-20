@@ -1,8 +1,146 @@
-[gd_scene load_steps=2 format=3 uid="uid://4rru50b5wml5"]
+[gd_scene load_steps=24 format=3 uid="uid://4rru50b5wml5"]
 
+[ext_resource type="Script" path="res://Scripts/gui.gd" id="1_k5oe6"]
 [ext_resource type="PackedScene" uid="uid://bxk7qbb2ocmiq" path="res://Art/3DModels/SnowmansLand/coolSnowman.glb" id="1_wdhmp"]
+[ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="2_ofq0k"]
+[ext_resource type="PackedScene" uid="uid://dojmlip645qeb" path="res://Art/3DModels/Ship/ship.glb" id="3_g5aqk"]
+[ext_resource type="FontFile" uid="uid://dfo5heyw5j05g" path="res://DialogueResources/fonts/ROCK.TTF" id="3_ko536"]
+[ext_resource type="AudioStream" uid="uid://c1xgg6djvc4na" path="res://Sounds/Music/startarea.ogg" id="4_21wsk"]
+[ext_resource type="Script" path="res://Scripts/dialogue_trigger.gd" id="4_fimb6"]
+[ext_resource type="FontFile" uid="uid://5nhnbxmta1x4" path="res://DialogueResources/fonts/ROCKI.TTF" id="4_oo8re"]
+[ext_resource type="Shader" path="res://Scripts/Shaders/water.gdshader" id="4_wt8c0"]
+[ext_resource type="FontFile" uid="uid://b7p6ef45tpqly" path="res://DialogueResources/fonts/ROCKB.TTF" id="5_5tjmv"]
+[ext_resource type="AudioStream" uid="uid://c53b6xdkp6rcj" path="res://Sounds/UI/pressbutton.ogg" id="5_s3cim"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_coxxk"]
+sky_top_color = Color(3.7542e-06, 0.688314, 0.75597, 1)
+sky_horizon_color = Color(0.25098, 0.478431, 1, 1)
+ground_bottom_color = Color(0, 0.583282, 0.89465, 1)
+ground_horizon_color = Color(0.25098, 0.478431, 1, 1)
+
+[sub_resource type="Sky" id="Sky_7coor"]
+sky_material = SubResource("ProceduralSkyMaterial_coxxk")
+
+[sub_resource type="Environment" id="Environment_ydpg0"]
+background_mode = 2
+sky = SubResource("Sky_7coor")
+ambient_light_color = Color(0, 0.694118, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.4
+sdfgi_use_occlusion = true
+fog_enabled = true
+fog_light_color = Color(0.25098, 0.478431, 1, 1)
+fog_density = 0.005
+fog_sky_affect = 0.0
+volumetric_fog_density = 0.01
+volumetric_fog_albedo = Color(0, 1, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jldhq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_72p13"]
+size = Vector3(5, 5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7fiel"]
+size = Vector3(20, 5, 20)
+
+[sub_resource type="Gradient" id="Gradient_a3rbc"]
+offsets = PackedFloat32Array(0, 0.100346, 0.404844, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.00125896, 0, 0.491513, 1, 0, 0.392157, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vjov3"]
+gradient = SubResource("Gradient_a3rbc")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vhr2a"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p8syf"]
+seamless = true
+noise = SubResource("FastNoiseLite_vhr2a")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hykma"]
+render_priority = 0
+shader = ExtResource("4_wt8c0")
+shader_parameter/direction_1 = Vector2(-0.05, 0.014)
+shader_parameter/direction_2 = Vector2(-0.06, -0.03)
+shader_parameter/direction_3 = Vector2(-0.04, 0)
+shader_parameter/watertexture = SubResource("NoiseTexture2D_p8syf")
+shader_parameter/colorramp = SubResource("GradientTexture1D_vjov3")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_srypg"]
+material = SubResource("ShaderMaterial_hykma")
+size = Vector2(512, 512)
 
 [node name="Node3D" type="Node3D"]
 
+[node name="GUI" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+script = ExtResource("1_k5oe6")
+
+[node name="DialogueText" type="RichTextLabel" parent="GUI"]
+offset_top = 864.0
+offset_right = 1921.0
+offset_bottom = 978.0
+theme_override_constants/text_highlight_v_padding = 1
+theme_override_constants/line_separation = 2
+theme_override_fonts/normal_font = ExtResource("3_ko536")
+theme_override_fonts/italics_font = ExtResource("4_oo8re")
+theme_override_fonts/bold_font = ExtResource("5_5tjmv")
+theme_override_font_sizes/italics_font_size = 48
+theme_override_font_sizes/normal_font_size = 48
+theme_override_font_sizes/bold_font_size = 48
+bbcode_enabled = true
+text = "[bgcolor=#000a][center]This is [i]dialogue[/i] here i guess lololol heheeh this will wrap around and around and around and stuff"
+fit_content = true
+drag_and_drop_selection_enabled = false
+visible_characters = 98
+visible_characters_behavior = 1
+language = "en"
+
+[node name="Dialogue" type="AudioStreamPlayer" parent="GUI"]
+stream = ExtResource("5_s3cim")
+
+[node name="Music" type="AudioStreamPlayer" parent="GUI"]
+stream = ExtResource("4_21wsk")
+autoplay = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ydpg0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.69476, 0.685828, -0.216677, -0.105278, 0.394983, 0.912636, 0.711495, -0.611252, 0.346621, 0, 0, 0)
+shadow_enabled = true
+
 [node name="coolSnowman" parent="." instance=ExtResource("1_wdhmp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.740067, 0, 2.95699)
+transform = Transform3D(0.168319, 0, 0, 0, 0.168319, 0, 0, 0, 0.168319, -0.740067, 0, 6.56785)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["Player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.11781, 0, 0)
+script = ExtResource("2_ofq0k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_jldhq")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.892292, 0)
+
+[node name="DialogueTrigger" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.84177, 0, 0)
+script = ExtResource("4_fimb6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DialogueTrigger"]
+shape = SubResource("BoxShape3D_72p13")
+
+[node name="TempFloor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.57702, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TempFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.82246, 0)
+shape = SubResource("BoxShape3D_7fiel")
+
+[node name="ship" parent="." instance=ExtResource("3_g5aqk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.090416, -2.21714, 0.491757)
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.11177, 0)
+mesh = SubResource("PlaneMesh_srypg")
+
+[connection signal="body_entered" from="DialogueTrigger" to="DialogueTrigger" method="_on_body_entered"]
