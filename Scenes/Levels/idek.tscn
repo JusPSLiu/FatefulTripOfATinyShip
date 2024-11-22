@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://4rru50b5wml5"]
+[gd_scene load_steps=26 format=3 uid="uid://4rru50b5wml5"]
 
 [ext_resource type="Script" path="res://Scripts/gui.gd" id="1_k5oe6"]
 [ext_resource type="PackedScene" uid="uid://bxk7qbb2ocmiq" path="res://Art/3DModels/SnowmansLand/coolSnowman.glb" id="1_wdhmp"]
@@ -44,13 +44,22 @@ size = Vector3(5, 5, 5)
 size = Vector3(20, 5, 20)
 
 [sub_resource type="Gradient" id="Gradient_a3rbc"]
-offsets = PackedFloat32Array(0, 0.100346, 0.404844, 1)
+offsets = PackedFloat32Array(0, 0.231834, 0.543253, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.00125896, 0, 0.491513, 1, 0, 0.392157, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_vjov3"]
 gradient = SubResource("Gradient_a3rbc")
 
+[sub_resource type="Gradient" id="Gradient_kxdji"]
+offsets = PackedFloat32Array(0.134948, 0.629758, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a6dpi"]
+gradient = SubResource("Gradient_kxdji")
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vhr2a"]
+noise_type = 2
+seed = 5
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p8syf"]
 seamless = true
@@ -59,11 +68,14 @@ noise = SubResource("FastNoiseLite_vhr2a")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hykma"]
 render_priority = 0
 shader = ExtResource("4_wt8c0")
-shader_parameter/direction_1 = Vector2(-0.05, 0.014)
-shader_parameter/direction_2 = Vector2(-0.06, -0.03)
-shader_parameter/direction_3 = Vector2(-0.04, 0)
+shader_parameter/highlight_intensity = 1.0
+shader_parameter/direction_1 = Vector2(-0.12, 0.07)
+shader_parameter/direction_2 = Vector2(-0.13, -0.06)
+shader_parameter/direction_3 = Vector2(-0.08, 0)
+shader_parameter/direction_4 = Vector2(-0.11, 0.02)
 shader_parameter/watertexture = SubResource("NoiseTexture2D_p8syf")
 shader_parameter/colorramp = SubResource("GradientTexture1D_vjov3")
+shader_parameter/highlight_ramp = SubResource("GradientTexture1D_a6dpi")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_srypg"]
 material = SubResource("ShaderMaterial_hykma")
